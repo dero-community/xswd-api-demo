@@ -5,36 +5,62 @@ import { to, Result, EventType } from "xswd-api";
 export function Home() {
   const api = useContext(ApiContext);
   const [initializing, setInitializing] = useState(false);
+  const [initializationError, setInitializationError] = useState("");
 
-  console.log({ api });
+  const initializeButton = (label: string = "Initialize API") => (
+    <button
+      onClick={async () => {
+        setInitializationError("");
+        setInitializing(true);
+        try {
+          if (!(await api?.initialize())) {
+            setInitializationError("Authentication was refused.");
+          }
+        } catch (error) {
+          setInitializationError(
+            "check that the wallet's XSWD server is active (16)"
+          );
+        } finally {
+          setInitializing(false);
+        }
+      }}
+    >
+      {label}
+    </button>
+  );
 
-  if (api !== null) {
-    if (api.initialized) {
-      return (
-        <>
-          <Details />
-          <Events />
-        </>
-      );
-    } else {
-      if (initializing) {
-        return <>Initializing... check your wallet for authentication</>;
-      } else {
-        return (
-          <button
-            onClick={async () => {
-              setInitializing(true);
-              await api.initialize();
-              setInitializing(false);
-            }}
-          >
-            Initialize API
-          </button>
-        );
-      }
-    }
-  }
-  return <>Loading...</>;
+  return (
+    <>
+      <h1>XSWD Demo App</h1>
+      {(() => {
+        if (api !== null) {
+          if (api.initialized) {
+            return (
+              <>
+                <Details />
+                <Events />
+              </>
+            );
+          } else {
+            if (initializationError) {
+              return (
+                <div style={{ color: "red" }}>
+                  Error connecting with xswd: <br />
+                  {initializationError} <br />
+                  {initializeButton("Retry")}
+                </div>
+              );
+            } else if (initializing) {
+              return <>Initializing... check your wallet for authentication</>;
+            } else {
+              return initializeButton();
+            }
+          }
+        }
+        return <>Loading...</>;
+      })()}
+    </>
+  );
 }
 
 function Details() {
@@ -73,7 +99,9 @@ function Details() {
 
 function Events() {
   const api = useContext(ApiContext);
-  let [events, setEvents] = useState<any[]>([]);
+  let [events, setEvents] = useState<
+    { time: string; event: EventType; value: any }[]
+  >([]);
 
   useEffect(() => {
     const eventTypes: EventType[] = [
@@ -86,9 +114,12 @@ function Events() {
       await api?.subscribe({
         event,
         callback: (value: any) => {
-          const eventData = `${new Date().toTimeString()} -> ${event}: ${JSON.stringify(
-            value
-          )}`;
+          const date = new Date();
+          const eventData = {
+            time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
+            event,
+            value,
+          };
           console.log("callback", eventData);
           events.push(eventData);
           setEvents([...events]);
@@ -100,12 +131,23 @@ function Events() {
   return (
     <div>
       <div>Events: </div>
-      <div>
+      <table>
+        <thead>
+          <th>Time</th>
+          <th>Event</th>
+          <th>Value</th>
+        </thead>
         {events.length == 0 && <>waiting for events...</>}
-        {events.map((event, index) => (
-          <div key={index}>{event}</div>
+        {events.map(({ time, event, value }, index) => (
+          <tr key={index}>
+            <td>{time}</td>
+            <td>{event}</td>
+            <td>
+              <pre>{JSON.stringify(value, undefined, 2)}</pre>
+            </td>
+          </tr>
         ))}
-      </div>
+      </table>
     </div>
   );
 }
