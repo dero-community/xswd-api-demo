@@ -46,20 +46,16 @@ function Details() {
 
   useEffect(() => {
     api?.node.GetHeight().then((response) => {
-      const [err, getheightResponse] = to<"daemon", "DERO.GetHeight", Result>(
-        response
-      );
-      setHeight(getheightResponse?.result.topoheight || null);
+      const [err, result] = to<"daemon", "DERO.GetHeight", Result>(response);
+      setHeight(result?.topoheight || null);
       if (err) {
         setError(err.error.message);
       }
     });
 
     api?.wallet.GetBalance().then((response) => {
-      const [err, getheightResponse] = to<"wallet", "GetBalance", Result>(
-        response
-      );
-      setBalance(getheightResponse?.result.balance || null);
+      const [err, result] = to<"wallet", "GetBalance", Result>(response);
+      setBalance(result?.balance || null);
       if (err) {
         setError(err.error.message);
       }
