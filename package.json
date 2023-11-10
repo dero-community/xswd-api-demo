@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xswd-api": "^0.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
