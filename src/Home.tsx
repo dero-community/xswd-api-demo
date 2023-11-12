@@ -72,18 +72,18 @@ function Details() {
 
   useEffect(() => {
     api?.node.GetHeight().then((response) => {
-      const [err, result] = to<"daemon", "DERO.GetHeight", Result>(response);
+      const [error, result] = to<"daemon", "DERO.GetHeight", Result>(response);
       setHeight(result?.topoheight || null);
-      if (err) {
-        setError(err.error.message);
+      if (error) {
+        setError(error.message);
       }
     });
 
     api?.wallet.GetBalance().then((response) => {
-      const [err, result] = to<"wallet", "GetBalance", Result>(response);
+      const [error, result] = to<"wallet", "GetBalance", Result>(response);
       setBalance(result?.balance || null);
-      if (err) {
-        setError(err.error.message);
+      if (error) {
+        setError(error.message);
       }
     });
   }, []);
