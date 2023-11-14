@@ -1232,10 +1232,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-xswd-api@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/xswd-api/-/xswd-api-0.3.0.tgz#835cf0bd8f39d92ac2710bc98cd60b0fedf798ba"
-  integrity sha512-Ul/KRo3oEu8SibKr9PtO3c8LWNL/F0xSZVhVkSitMk7XbzRRI+k4ncxnhXmx9QJkpCmepbqXJlHnzg0ZcP1U2A==
+xswd-api@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/xswd-api/-/xswd-api-0.3.1.tgz#cd0baa0da35ff11b7bed46438c2a4a435ee0eb08"
+  integrity sha512-wR12wxVKSE5gmM1oLOOR8+S+HSH5pE/5r75W1KWTfrlDswthQ6lgD7Ca7G3xFMNui7VxBAv890hiIkhKAPawkg==
   dependencies:
     "@types/node" "^20.9.0"
 
